@@ -1,6 +1,7 @@
 const { createServer } = require("node:http");
 
-const { openFile } = require("./fs-utils");
+const { openFile } = require("./FsUtils");
+const ee = require("./EventEmitter");
 
 const PORT = 3000;
 const HOST = "localhost";
@@ -32,9 +33,7 @@ const server = createServer(async (req, res) => {
     res.end(await openFile(VIEWS_DIR, view));
   }
 
-  console.log(
-    `${req.method}\t${req.url}\t${res.statusCode}\t${res.statusMessage}`
-  );
+  ee.logInConsole(req.method, req.url, res.statusCode, res.statusMessage);
 });
 
 server.listen(PORT, HOST, console.log(`Server is listening on port: ${PORT}`));
