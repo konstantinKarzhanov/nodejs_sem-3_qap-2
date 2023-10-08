@@ -1,7 +1,10 @@
 const { createServer } = require("node:http");
 
+const { openFile } = require("./fs-utils");
+
 const PORT = 3000;
 const HOST = "localhost";
+const VIEWS_DIR = "views";
 const NOT_FOUND_VIEW = "404.html";
 
 const viewMap = new Map([
@@ -13,10 +16,25 @@ const viewMap = new Map([
   ["/subscribe", "subscribe.html"],
 ]);
 
-const server = createServer((req, res) => {
+const redirectMap = new Map([["/about-us", "/about"]]);
+
+const server = createServer(async (req, res) => {
   const path = req.url;
-  const view = viewMap.get(path) || NOT_FOUND_VIEW;
-  const statusCode = view != NOT_FOUND_VIEW ? 200 : 404;
+
+  const view = viewMap.get(path) || redirectMap.get(path) || NOT_FOUND_VIEW;
+  res.statusCode = viewMap.has(path) ? 200 : redirectMap.has(path) ? 301 : 404;
+
+  if (res.statusCode == 301) {
+    res.writeHead(res.statusCode, { Location: redirectMap.get(path) });
+    res.end();
+  } else {
+    res.writeHead(res.statusCode, { "Content-Type": "text/html" });
+    res.end(await openFile(VIEWS_DIR, view));
+  }
+
+  console.log(
+    `${req.method}\t${req.url}\t${res.statusCode}\t${res.statusMessage}`
+  );
 });
 
 server.listen(PORT, HOST, console.log(`Server is listening on port: ${PORT}`));
