@@ -1,6 +1,6 @@
 const { createServer } = require("node:http");
 
-const { openFile } = require("./fs-utils");
+const { openFile } = require("./FsUtils");
 const ee = require("./EventEmitter");
 
 const PORT = 3000;
