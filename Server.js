@@ -1,8 +1,9 @@
 const { createServer } = require("node:http");
 
 const chalk = require("chalk");
-const { openFile } = require("./FsUtils");
-const logEE = require("./EventEmitter");
+
+const { fetchFile } = require("./utils");
+const logEE = require("./emitter");
 
 const PORT = 3000;
 const HOST = "localhost";
@@ -30,19 +31,45 @@ const server = createServer(async (req, res) => {
     res.writeHead(res.statusCode, { Location: redirectMap.get(path) });
     res.end();
   } else {
+    let data = await fetchFile(VIEWS_DIR, view);
+
+    if (!data) {
+      res.statusCode = 500;
+      data = `
+      <h1>Unexpected Error</h1>
+      <p>Error code: 500</p>
+      <p>An error has occured and we're working to fix the problem! Will be up and running shortly</p>
+      `;
+    }
+
     res.writeHead(res.statusCode, { "Content-Type": "text/html" });
-    res.end(await openFile(VIEWS_DIR, view));
+    res.end(data);
   }
 
-  logEE.logConsole(req.method, req.url, res.statusCode, res.statusMessage);
+  console.log(
+    `method: ${chalk.cyan(req.method)}, requested url: ${chalk.green(
+      req.url
+    )}, status code: ${chalk.magenta(
+      res.statusCode
+    )}, status message: ${chalk.yellow(res.statusMessage)}`
+  );
+
+  logEE.logFile(
+    "establishedConnection",
+    res.statusCode >= 500
+      ? "error"
+      : res.statusCode == 404
+      ? "warning"
+      : res.statusCode == 301
+      ? "redirect"
+      : "success",
+    `${req.method}: ${req.url}, ${res.statusCode} (${res.statusMessage})`
+  );
 });
 
-server.listen(
-  PORT,
-  HOST,
-  console.log(
-    chalk.yellow("Server is listening on port:"),
-    chalk.green(PORT),
-    "\n"
-  )
-);
+server.listen(PORT, HOST, () => {
+  const message = "Server is listening on port";
+
+  console.log(`${chalk.yellow(message)}, ${chalk.green(PORT)}\n`);
+  logEE.logFile("startServer", "sysInfo", `${message} ${PORT}`);
+});
