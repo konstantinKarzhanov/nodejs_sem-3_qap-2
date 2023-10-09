@@ -1,8 +1,14 @@
 const EventEmitter = require("node:events");
+const chalk = require("chalk");
 
-class MyEmitter extends EventEmitter {
-  logInConsole(method, url, code, msg) {
-    this.emit("logInConsole", method, url, code, msg);
+class LogEmitter extends EventEmitter {
+  logConsole(method, url, code, msg) {
+    const chMethod = chalk.cyan(method);
+    const chUrl = chalk.green(url);
+    const chCode = chalk.magenta(code);
+    const chMsg = chalk.yellow(msg);
+
+    this.emit("logConsole", chMethod, chUrl, chCode, chMsg);
   }
 
   saveLog() {
@@ -10,12 +16,12 @@ class MyEmitter extends EventEmitter {
   }
 }
 
-const ee = new MyEmitter();
+const logEE = new LogEmitter();
 
-ee.on("logInConsole", (method, url, code, msg) => {
+logEE.on("logConsole", (method, url, code, msg) => {
   console.log(
     `method: ${method}, requested url: ${url}, status code: ${code}, status message: ${msg}`
   );
 });
 
-module.exports = ee;
+module.exports = logEE;
