@@ -18,7 +18,7 @@ class LogEmitter extends EventEmitter {
   }
 }
 
-exports.logEE = new LogEmitter();
+const logEE = new LogEmitter();
 
 logEE.on("logConsole", (method, url, code, msg) => {
   console.log(
@@ -32,3 +32,5 @@ logEE.on("logFile", (event, level, message) => {
 
   saveLog(logRootDir, log);
 });
+
+module.exports = logEE;
