@@ -1,7 +1,8 @@
 const { createServer } = require("node:http");
 
+const chalk = require("chalk");
 const { openFile } = require("./FsUtils");
-const ee = require("./EventEmitter");
+const logEE = require("./EventEmitter");
 
 const PORT = 3000;
 const HOST = "localhost";
@@ -33,7 +34,15 @@ const server = createServer(async (req, res) => {
     res.end(await openFile(VIEWS_DIR, view));
   }
 
-  ee.logInConsole(req.method, req.url, res.statusCode, res.statusMessage);
+  logEE.logConsole(req.method, req.url, res.statusCode, res.statusMessage);
 });
 
-server.listen(PORT, HOST, console.log(`Server is listening on port: ${PORT}`));
+server.listen(
+  PORT,
+  HOST,
+  console.log(
+    chalk.yellow("Server is listening on port:"),
+    chalk.green(PORT),
+    "\n"
+  )
+);
