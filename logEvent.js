@@ -18,8 +18,8 @@ exports.createLog = (event, level, message) => {
 exports.saveLog = async (logRootDir, logData) => {
   const currentDate = new Date();
   const logRoot = join(__dirname, logRootDir);
-  const logDir = join(logRoot, format(currentDate, "MMyyyy"));
-  const logFile = join(logDir, format(currentDate, "ddMMyyyy") + ".log");
+  const logDir = join(logRoot, format(currentDate, "MM-yyyy"));
+  const logFile = join(logDir, format(currentDate, "dd-MM-yyyy") + ".log");
 
   try {
     !existsSync(logRoot) && (await mkdir(logRoot));
