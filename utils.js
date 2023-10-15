@@ -1,5 +1,5 @@
 const { readFile } = require("node:fs/promises");
-const { join, sep } = require("node:path");
+const { join, sep, basename } = require("node:path");
 
 const logEE = require("./emitter");
 const { errorMessage } = require("./logEvent");
@@ -9,7 +9,11 @@ exports.fetchFile = async (...args) => {
 
   try {
     const data = await readFile(join(__dirname, path));
-    logEE.logFile("fetchFile", "sysInfo", "File fetched successfully");
+    logEE.logFile(
+      "fetchFile",
+      "sysInfo",
+      `File "${basename(path)}" fetched successfully`
+    );
     return data;
   } catch ({ name, message }) {
     logEE.logFile("fetchFile", "error", `${name}: ${message}`);
