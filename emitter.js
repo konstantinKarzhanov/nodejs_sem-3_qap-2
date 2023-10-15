@@ -1,5 +1,4 @@
 const EventEmitter = require("node:events");
-const chalk = require("chalk");
 
 const { createLog, saveLog } = require("./logEvent");
 
