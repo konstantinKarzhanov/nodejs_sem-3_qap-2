@@ -19,7 +19,11 @@ const viewMap = new Map([
   ["/subscribe", "subscribe.html"],
 ]);
 
-const redirectMap = new Map([["/about-us", "/about"]]);
+const redirectMap = new Map([
+  ["/about-us", "/about"],
+  ["/contact-us", "/contact"],
+  ["/our-products", "/products"],
+]);
 
 const server = createServer(async (req, res) => {
   const path = req.url;
@@ -37,7 +41,7 @@ const server = createServer(async (req, res) => {
       res.statusCode = 500;
       data = `
       <h1>Unexpected Error</h1>
-      <p>Error code: 500</p>
+      <p>Error code: ${res.statusCode}</p>
       <p>An error has occured and we're working to fix the problem! Will be up and running shortly</p>
       `;
     }
@@ -55,7 +59,7 @@ const server = createServer(async (req, res) => {
   );
 
   logEE.logFile(
-    "establishedConnection",
+    "serverResponse",
     res.statusCode >= 500
       ? "error"
       : res.statusCode == 404
