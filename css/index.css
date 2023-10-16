@@ -1,0 +1,105 @@
+/* ------------- */
+/* css-variables */
+/* ------------- */
+:root {
+  /* fonts */
+  --ff-sans-normal: "Indie Flower", cursive;
+
+  /* colors */
+  --c--bg-gradient: repeating-linear-gradient(
+      to right,
+      #231f20,
+      #231f20 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      #231f20,
+      #231f20 1px,
+      transparent 1px,
+      transparent 30px
+    );
+}
+
+/* --------------- */
+/* reset           */
+/* --------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* set smooth scrolling on focusable elements */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Remove default margins */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+/* Remove default list styles on ul, ol elements */
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+/* Remove default link styles */
+a,
+a:hover,
+a:visited {
+  text-decoration: none;
+}
+
+/* Change default img styles */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Change default body styles */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  font-family: var(--ff-sans-normal);
+  font-size: 1.5rem;
+  color: magenta;
+  background-color: #0f0d0e;
+  background-image: var(--c--bg-gradient);
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* remove animations for people who've turned them off */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    -webkit-animation-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+    animation-iteration-count: 1 !important;
+    -webkit-transition-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

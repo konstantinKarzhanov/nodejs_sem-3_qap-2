@@ -1,13 +1,16 @@
 const { createServer } = require("node:http");
+const { extname } = require("node:path");
 
 const chalk = require("chalk");
 
-const { fetchFile } = require("./utils");
+const { fetchFile } = require("./fs-utils");
 const logEE = require("./emitter");
 
 const PORT = 3000;
 const HOST = "localhost";
+
 const VIEWS_DIR = "views";
+const CSS_DIR = "css";
 const NOT_FOUND_VIEW = "404.html";
 
 const viewMap = new Map([
@@ -28,35 +31,58 @@ const redirectMap = new Map([
 const server = createServer(async (req, res) => {
   const path = req.url;
 
-  const view = viewMap.get(path) || redirectMap.get(path) || NOT_FOUND_VIEW;
-  res.statusCode = viewMap.has(path) ? 200 : redirectMap.has(path) ? 301 : 404;
+  logEE.logFile(
+    "clientRequest",
+    "success",
+    `method: "${req.method}", url: "${req.url}"`
+  );
 
-  if (res.statusCode == 301) {
-    res.writeHead(res.statusCode, { Location: redirectMap.get(path) });
-    res.end();
+  if (extname(path) == ".css") {
+    const data = await fetchFile(CSS_DIR, path);
+    res.statusCode = data ? 200 : 404;
+
+    res.writeHead(res.statusCode, { "Content-Type": "text/css" });
+    res.end(data && data);
   } else {
-    let data = await fetchFile(VIEWS_DIR, view);
+    const view = viewMap.get(path) || redirectMap.get(path) || NOT_FOUND_VIEW;
+    res.statusCode = viewMap.has(path)
+      ? 200
+      : redirectMap.has(path)
+      ? 301
+      : 404;
 
-    if (!data) {
-      res.statusCode = 500;
-      data = `
+    if (res.statusCode == 301) {
+      res.writeHead(res.statusCode, { Location: redirectMap.get(path) });
+      res.end();
+    } else {
+      let data = await fetchFile(VIEWS_DIR, view);
+
+      if (!data) {
+        res.statusCode = 500;
+        data = `
       <h1>Unexpected Error</h1>
       <p>Error code: ${res.statusCode}</p>
       <p>An error has occured and we're working to fix the problem! Will be up and running shortly</p>
       `;
-    }
+      }
 
-    res.writeHead(res.statusCode, { "Content-Type": "text/html" });
-    res.end(data);
+      res.writeHead(res.statusCode, { "Content-Type": "text/html" });
+      res.end(data);
+    }
   }
 
   console.log(
-    `method: ${chalk.cyan(req.method)}, requested url: ${chalk.green(
-      req.url
-    )}, status code: ${chalk.magenta(
-      res.statusCode
-    )}, status message: ${chalk.yellow(res.statusMessage)}`
+    `${chalk.dim("Client request:")} [method: ${chalk.cyan(
+      req.method
+    )}, requested url: ${chalk.green(req.url)}]`
   );
+
+  console.log(
+    `${chalk.dim("Server response:")} [status code: ${chalk.magenta(
+      res.statusCode
+    )}, status message: ${chalk.yellow(res.statusMessage)}]`
+  );
+  console.log("-".repeat(80));
 
   logEE.logFile(
     "serverResponse",
@@ -67,7 +93,7 @@ const server = createServer(async (req, res) => {
       : res.statusCode == 301
       ? "redirect"
       : "success",
-    `${req.method}: ${req.url}, ${res.statusCode} (${res.statusMessage})`
+    `${res.statusCode} "${res.statusMessage}"`
   );
 });
 
