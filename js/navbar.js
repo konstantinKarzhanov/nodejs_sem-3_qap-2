@@ -20,7 +20,7 @@ const createNavbar = (views, homeView, currentPath) => {
     viewLink.classList.add("link--nav");
     viewLink.href = path;
 
-    path == homeView && currentPath == "/"
+    path == "/" + homeView && currentPath == "/"
       ? viewLink.classList.add("active")
       : path == currentPath && viewLink.classList.add("active");
 
