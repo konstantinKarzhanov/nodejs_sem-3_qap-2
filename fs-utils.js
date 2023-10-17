@@ -2,7 +2,7 @@ const { readFile } = require("node:fs/promises");
 const { join, sep, basename } = require("node:path");
 
 const logEE = require("./emitter");
-const { logTitle, logError } = require("./log-utils");
+const { logTitle, logError, borderLine } = require("./log-utils");
 
 exports.fetchFile = async (...args) => {
   const path = args.join(sep);
@@ -14,7 +14,7 @@ exports.fetchFile = async (...args) => {
         path
       )}" fetched successfully]`
     );
-    console.log("-".repeat(80));
+    console.log(borderLine);
 
     logEE.logFile(
       "fetchFile",
@@ -25,7 +25,7 @@ exports.fetchFile = async (...args) => {
     return data;
   } catch ({ name, message }) {
     console.log(logError(name, message));
-    console.log("-".repeat(80));
+    console.log(borderLine);
 
     logEE.logFile("fetchFile", "error", `${name}: ${message}`);
   }

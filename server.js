@@ -8,6 +8,7 @@ const {
   logResCode,
   logMessage,
   logPortURL,
+  borderLine,
 } = require("./log-utils");
 const logEE = require("./emitter");
 
@@ -42,7 +43,7 @@ const server = createServer(async (req, res) => {
       req.method
     )}, requested url: ${logPortURL(req.url)}]`
   );
-  console.log("-".repeat(80));
+  console.log(borderLine);
 
   logEE.logFile(
     "clientRequest",
@@ -95,7 +96,7 @@ const server = createServer(async (req, res) => {
       res.statusCode
     )}, status message: ${logMessage(res.statusMessage)}]`
   );
-  console.log("-".repeat(80));
+  console.log(borderLine);
 
   logEE.logFile(
     "serverResponse",

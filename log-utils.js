@@ -12,6 +12,7 @@ exports.logResCode = chalk.magenta;
 exports.logMessage = chalk.yellow;
 exports.logPortURL = chalk.green;
 exports.logError = chalk.red;
+exports.borderLine = "-".repeat(60);
 
 exports.createLog = (event, level, message) => {
   return `${format(
