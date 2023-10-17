@@ -12,7 +12,7 @@ exports.createLog = (event, level, message) => {
   return `${format(
     new Date(),
     "dd/MM/yyyy HH:mm:ss"
-  )}\t[${event} - (${level.toUpperCase()})]\t${uuidv4()}\t[${message}]\n`;
+  )}\t[${event} - "${level.toUpperCase()}"]\t${uuidv4()}\t[${message}]\n`;
 };
 
 exports.saveLog = async (logRootDir, logData) => {

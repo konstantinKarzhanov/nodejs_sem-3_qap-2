@@ -1,6 +1,6 @@
 const EventEmitter = require("node:events");
 
-const { createLog, saveLog } = require("./logEvent");
+const { createLog, saveLog } = require("./log-utils");
 
 class LogEmitter extends EventEmitter {
   logFile(event, level, message) {

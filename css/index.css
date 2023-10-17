@@ -1,0 +1,175 @@
+/* ------------- */
+/* css-variables */
+/* ------------- */
+:root {
+  /* fonts */
+  --ff-sans-normal: "Indie Flower", cursive;
+
+  /* spacing */
+  --pad-x: 3rem;
+  --pad-y: 3rem;
+  --gap: 1rem;
+
+  /* colors */
+  --c--bg-gradient: repeating-linear-gradient(
+      to right,
+      #231f20,
+      #231f20 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      #231f20,
+      #231f20 1px,
+      transparent 1px,
+      transparent 30px
+    );
+
+  /* dimensions */
+  --container-width: 90rem;
+}
+
+/* --------------- */
+/* reset           */
+/* --------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* set smooth scrolling on focusable elements */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Remove default margins */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+/* Remove default list styles on ul, ol elements */
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+/* Remove default link styles */
+a,
+a:hover,
+a:visited {
+  text-decoration: none;
+}
+
+/* Change default img styles */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Change default body styles */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  font-family: var(--ff-sans-normal);
+  font-size: 1.5rem;
+  color: magenta;
+  background-color: #0f0d0e;
+  background-image: var(--c--bg-gradient);
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* remove animations for people who've turned them off */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    -webkit-animation-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+    animation-iteration-count: 1 !important;
+    -webkit-transition-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------- */
+/* Utility classes */
+/* --------------- */
+
+/* containers */
+.container {
+  margin: 0 auto;
+  max-width: var(--container-width);
+}
+
+.container--pall {
+  padding-inline: var(--pad-x);
+  padding-block: var(--pad-y);
+}
+
+.container--px {
+  padding-inline: var(--pad-x);
+}
+
+.container--py {
+  padding-block: var(--pad-y);
+}
+
+/* flexbox */
+.flex {
+  display: flex;
+}
+
+.flex--ai-c {
+  align-items: center;
+}
+
+.flex--jc-c {
+  justify-content: center;
+}
+
+.flex--jc-sb {
+  justify-content: space-between;
+}
+
+.flex--gap {
+  gap: var(--gap);
+}
+
+/* margins */
+.m--auto {
+  margin: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Custom classes */
+.link--nav {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+a.active {
+  color: yellow;
+}
