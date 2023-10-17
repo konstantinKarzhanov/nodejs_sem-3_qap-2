@@ -6,7 +6,12 @@ const { v4: uuidv4 } = require("uuid");
 const { format } = require("date-fns");
 const chalk = require("chalk");
 
-exports.errorMessage = chalk.red;
+exports.logTitle = chalk.dim;
+exports.logReqMethod = chalk.cyan;
+exports.logResCode = chalk.magenta;
+exports.logMessage = chalk.yellow;
+exports.logPortURL = chalk.green;
+exports.logError = chalk.red;
 
 exports.createLog = (event, level, message) => {
   return `${format(
@@ -27,6 +32,6 @@ exports.saveLog = async (logRootDir, logData) => {
 
     await appendFile(logFile, logData);
   } catch ({ name, message }) {
-    console.log(errorMessage(name, message));
+    console.log(logError(name, message));
   }
 };

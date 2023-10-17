@@ -1,9 +1,14 @@
 const { createServer } = require("node:http");
 const { extname } = require("node:path");
 
-const chalk = require("chalk");
-
 const { fetchFile } = require("./fs-utils");
+const {
+  logTitle,
+  logReqMethod,
+  logResCode,
+  logMessage,
+  logPortURL,
+} = require("./log-utils");
 const logEE = require("./emitter");
 
 const PORT = 3000;
@@ -31,6 +36,13 @@ const redirectMap = new Map([
 
 const server = createServer(async (req, res) => {
   const path = req.url;
+
+  console.log(
+    `${logTitle("Client request:")} [method: ${logReqMethod(
+      req.method
+    )}, requested url: ${logPortURL(req.url)}]`
+  );
+  console.log("-".repeat(80));
 
   logEE.logFile(
     "clientRequest",
@@ -79,15 +91,9 @@ const server = createServer(async (req, res) => {
   }
 
   console.log(
-    `${chalk.dim("Client request:")} [method: ${chalk.cyan(
-      req.method
-    )}, requested url: ${chalk.green(req.url)}]`
-  );
-
-  console.log(
-    `${chalk.dim("Server response:")} [status code: ${chalk.magenta(
+    `${logTitle("Server response:")} [status code: ${logResCode(
       res.statusCode
-    )}, status message: ${chalk.yellow(res.statusMessage)}]`
+    )}, status message: ${logMessage(res.statusMessage)}]`
   );
   console.log("-".repeat(80));
 
@@ -107,6 +113,6 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   const message = "Server is listening on port";
 
-  console.log(`${chalk.yellow(message)}, ${chalk.green(PORT)}\n`);
+  console.log(`${logMessage(message)}, ${logPortURL(PORT)}\n`);
   logEE.logFile("startServer", "sysInfo", `${message} ${PORT}`);
 });
