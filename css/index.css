@@ -5,6 +5,11 @@
   /* fonts */
   --ff-sans-normal: "Indie Flower", cursive;
 
+  /* spacing */
+  --pad-x: 3rem;
+  --pad-y: 3rem;
+  --gap: 1rem;
+
   /* colors */
   --c--bg-gradient: repeating-linear-gradient(
       to right,
@@ -20,6 +25,9 @@
       transparent 1px,
       transparent 30px
     );
+
+  /* dimensions */
+  --container-width: 90rem;
 }
 
 /* --------------- */
@@ -102,4 +110,66 @@ select {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* --------------- */
+/* Utility classes */
+/* --------------- */
+
+/* containers */
+.container {
+  margin: 0 auto;
+  max-width: var(--container-width);
+}
+
+.container--pall {
+  padding-inline: var(--pad-x);
+  padding-block: var(--pad-y);
+}
+
+.container--px {
+  padding-inline: var(--pad-x);
+}
+
+.container--py {
+  padding-block: var(--pad-y);
+}
+
+/* flexbox */
+.flex {
+  display: flex;
+}
+
+.flex--ai-c {
+  align-items: center;
+}
+
+.flex--jc-c {
+  justify-content: center;
+}
+
+.flex--jc-sb {
+  justify-content: space-between;
+}
+
+.flex--gap {
+  gap: var(--gap);
+}
+
+/* margins */
+.m--auto {
+  margin: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Custom classes */
+.link--nav {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+a.active {
+  color: yellow;
 }

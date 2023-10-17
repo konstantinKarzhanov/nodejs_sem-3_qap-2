@@ -11,6 +11,7 @@ const HOST = "localhost";
 
 const VIEWS_DIR = "views";
 const CSS_DIR = "css";
+const JS_DIR = "js";
 const NOT_FOUND_VIEW = "404.html";
 
 const viewMap = new Map([
@@ -42,6 +43,12 @@ const server = createServer(async (req, res) => {
     res.statusCode = data ? 200 : 404;
 
     res.writeHead(res.statusCode, { "Content-Type": "text/css" });
+    res.end(data && data);
+  } else if (extname(path) == ".js") {
+    const data = await fetchFile(JS_DIR, path);
+    res.statusCode = data ? 200 : 404;
+
+    res.writeHead(res.statusCode, { "Content-Type": "text/javascript" });
     res.end(data && data);
   } else {
     const view = viewMap.get(path) || redirectMap.get(path) || NOT_FOUND_VIEW;
