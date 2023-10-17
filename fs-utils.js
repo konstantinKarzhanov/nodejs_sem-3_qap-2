@@ -1,7 +1,7 @@
 const { readFile } = require("node:fs/promises");
 const { join, sep, basename } = require("node:path");
 
-const logEE = require("./emitter");
+const logEE = require("./log-emitter");
 const { logTitle, logError, borderLine } = require("./log-utils");
 
 exports.fetchFile = async (...args) => {

@@ -10,7 +10,7 @@ const {
   logPortURL,
   borderLine,
 } = require("./log-utils");
-const logEE = require("./emitter");
+const logEE = require("./log-emitter");
 
 const PORT = 3000;
 const HOST = "localhost";
