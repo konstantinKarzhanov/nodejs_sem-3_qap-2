@@ -86,6 +86,8 @@ const server = createServer(async (req, res) => {
       `;
       }
 
+      view.includes("subscribe") &&
+        res.setHeader("Set-Cookie", "cookieGreeting=hello I am a cookie");
       res.writeHead(res.statusCode, { "Content-Type": "text/html" });
       res.end(data);
     }
