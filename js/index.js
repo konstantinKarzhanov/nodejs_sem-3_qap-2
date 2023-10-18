@@ -4,7 +4,7 @@ const currentURLPath = window.location.pathname;
 const title = currentURLPath.split("/").slice(-1)[0];
 const body = document.querySelector("body");
 
-const viewArr = ["home", "about", "contact", "products", "subscribe"];
+const viewArr = ["home", "about", "contact", "products", "subscribe", "sixth"];
 const homeView = viewArr[0];
 
 const header = document.createElement("header");
@@ -22,7 +22,7 @@ header.appendChild(createNavbar(viewArr, homeView, currentURLPath));
 
 h1.textContent =
   title == ""
-    ? homeView[0].toUpperCase() + homeView.slice(1)
+    ? `${homeView[0].toUpperCase() + homeView.slice(1)} Page`
     : viewArr.indexOf(title) != -1
-    ? `${title[0].toUpperCase() + title.slice(1)}`
+    ? `${title[0].toUpperCase() + title.slice(1)} Page`
     : "404: Page Not Found";
