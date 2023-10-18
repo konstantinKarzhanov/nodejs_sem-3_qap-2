@@ -1,7 +1,9 @@
 const { createServer } = require("node:http");
 const { extname } = require("node:path");
 
+const logEE = require("./log-emitter");
 const { fetchFile } = require("./fs-utils");
+
 const {
   logTitle,
   logReqMethod,
@@ -10,31 +12,17 @@ const {
   logPortURL,
   borderLine,
 } = require("./log-utils");
-const logEE = require("./log-emitter");
 
-const PORT = 3000;
-const HOST = "localhost";
-
-const VIEWS_DIR = "views";
-const CSS_DIR = "css";
-const JS_DIR = "js";
-const NOT_FOUND_VIEW = "404.html";
-
-const viewMap = new Map([
-  ["/", "index.html"],
-  ["/home", "index.html"],
-  ["/about", "about.html"],
-  ["/contact", "contact.html"],
-  ["/products", "products.html"],
-  ["/subscribe", "subscribe.html"],
-  ["/sixth", "sixth.html"],
-]);
-
-const redirectMap = new Map([
-  ["/about-us", "/about"],
-  ["/contact-us", "/contact"],
-  ["/our-products", "/products"],
-]);
+const {
+  PORT,
+  HOST,
+  VIEWS_DIR,
+  CSS_DIR,
+  JS_DIR,
+  NOT_FOUND_VIEW,
+  viewMap,
+  redirectMap,
+} = require("./config");
 
 const server = createServer(async (req, res) => {
   const path = req.url;
