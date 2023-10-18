@@ -10,7 +10,7 @@ exports.logTitle = chalk.dim;
 exports.logReqMethod = chalk.cyan;
 exports.logResCode = chalk.magenta;
 exports.logMessage = chalk.yellow;
-exports.logPortURL = chalk.green;
+exports.logFilePortURL = chalk.green;
 exports.logError = chalk.red;
 exports.borderLine = "-".repeat(60);
 

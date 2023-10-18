@@ -9,7 +9,7 @@ const {
   logReqMethod,
   logResCode,
   logMessage,
-  logPortURL,
+  logFilePortURL,
   borderLine,
 } = require("./log-utils");
 
@@ -30,7 +30,7 @@ const server = createServer(async (req, res) => {
   console.log(
     `${logTitle("Client request:")} [method: ${logReqMethod(
       req.method
-    )}, requested url: ${logPortURL(req.url)}]`
+    )}, requested url: ${logFilePortURL(req.url)}]`
   );
   console.log(borderLine);
 
@@ -106,6 +106,6 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   const message = "Server is listening on port";
 
-  console.log(`${logMessage(message)}, ${logPortURL(PORT)}\n`);
+  console.log(`${logMessage(message)}, ${logFilePortURL(PORT)}\n`);
   logEE.logFile("startServer", "sysInfo", `${message} ${PORT}`);
 });
