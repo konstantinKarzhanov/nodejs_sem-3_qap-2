@@ -1,51 +1,44 @@
+// Import required built-in modules
 const { createServer } = require("node:http");
 const { extname } = require("node:path");
 
+// Import custom modules, functions and variables
+const logEE = require("./log-emitter");
 const { fetchFile } = require("./fs-utils");
+
 const {
   logTitle,
   logReqMethod,
   logResCode,
   logMessage,
-  logPortURL,
+  logFilePortURL,
   borderLine,
 } = require("./log-utils");
-const logEE = require("./log-emitter");
 
-const PORT = 3000;
-const HOST = "localhost";
+const {
+  PORT,
+  HOST,
+  VIEWS_DIR,
+  CSS_DIR,
+  JS_DIR,
+  NOT_FOUND_VIEW,
+  viewMap,
+  redirectMap,
+} = require("./config");
 
-const VIEWS_DIR = "views";
-const CSS_DIR = "css";
-const JS_DIR = "js";
-const NOT_FOUND_VIEW = "404.html";
-
-const viewMap = new Map([
-  ["/", "index.html"],
-  ["/home", "index.html"],
-  ["/about", "about.html"],
-  ["/contact", "contact.html"],
-  ["/products", "products.html"],
-  ["/subscribe", "subscribe.html"],
-  ["/sixth", "sixth.html"],
-]);
-
-const redirectMap = new Map([
-  ["/about-us", "/about"],
-  ["/contact-us", "/contact"],
-  ["/our-products", "/products"],
-]);
-
+// Create an HTTP server
 const server = createServer(async (req, res) => {
   const path = req.url;
 
+  // Log the client request details to the console
   console.log(
     `${logTitle("Client request:")} [method: ${logReqMethod(
       req.method
-    )}, requested url: ${logPortURL(req.url)}]`
+    )}, requested url: ${logFilePortURL(req.url)}]`
   );
   console.log(borderLine);
 
+  // Log the client request details to the file
   logEE.logFile(
     "clientRequest",
     "success",
@@ -53,18 +46,21 @@ const server = createServer(async (req, res) => {
   );
 
   if (extname(path) == ".css") {
+    // Handle requests for CSS files
     const data = await fetchFile(CSS_DIR, path);
     res.statusCode = data ? 200 : 404;
 
     res.writeHead(res.statusCode, { "Content-Type": "text/css" });
     res.end(data && data);
   } else if (extname(path) == ".js") {
+    // Handle requests for JS files
     const data = await fetchFile(JS_DIR, path);
     res.statusCode = data ? 200 : 404;
 
     res.writeHead(res.statusCode, { "Content-Type": "text/javascript" });
     res.end(data && data);
   } else {
+    // Handle other requests
     const view = viewMap.get(path) || redirectMap.get(path) || NOT_FOUND_VIEW;
     res.statusCode = viewMap.has(path)
       ? 200
@@ -72,6 +68,7 @@ const server = createServer(async (req, res) => {
       ? 301
       : 404;
 
+    // Handle redirects
     if (res.statusCode == 301) {
       res.writeHead(res.statusCode, { Location: redirectMap.get(path) });
       res.end();
@@ -87,6 +84,7 @@ const server = createServer(async (req, res) => {
       `;
       }
 
+      // Set a cookie for view that includes "subscribe"
       view.includes("subscribe") &&
         res.setHeader("Set-Cookie", "cookieGreeting=hello I am a cookie");
 
@@ -95,6 +93,7 @@ const server = createServer(async (req, res) => {
     }
   }
 
+  // Log the server response details to the console
   console.log(
     `${logTitle("Server response:")} [status code: ${logResCode(
       res.statusCode
@@ -102,6 +101,7 @@ const server = createServer(async (req, res) => {
   );
   console.log(borderLine);
 
+  // Log the server response details to the file
   logEE.logFile(
     "serverResponse",
     res.statusCode >= 500
@@ -115,9 +115,13 @@ const server = createServer(async (req, res) => {
   );
 });
 
+// Start the server and listen on the specified port and host
 server.listen(PORT, HOST, () => {
   const message = "Server is listening on port";
 
-  console.log(`${logMessage(message)}, ${logPortURL(PORT)}\n`);
+  // Log the message to the console
+  console.log(`${logMessage(message)}, ${logFilePortURL(PORT)}\n`);
+
+  // Log the message to the file
   logEE.logFile("startServer", "sysInfo", `${message} ${PORT}`);
 });
